@@ -183,7 +183,13 @@ public class Nest<T> {
         returnResource(jedis);
         return reply;
     }
-
+    public Long sadd(String member,int ttl) {
+        Jedis jedis = getResource();
+        Long reply = jedis.sadd(key(), member);
+        jedis.expire(key(),ttl);
+        returnResource(jedis);
+        return reply;
+    }
     public Long srem(String member) {
         Jedis jedis = getResource();
         Long reply = jedis.srem(key(), member);

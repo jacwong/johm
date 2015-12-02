@@ -20,6 +20,8 @@ public final class JOhm {
 	/** Current db index, on new redis connection it is set by default to 0 */
 	public static long dbIndex = 0L;
 
+    private static final int DEFAULT_TTL=1000*60;
+
 	/**
 	 * Read the id from the given model. This operation will typically be useful
 	 * only after an initial interaction with Redis in the form of a call to
@@ -224,8 +226,14 @@ public final class JOhm {
 		return JOhm.<T>save(model, false);
 	}
 
+    public static <T> T save(final Object model, boolean saveChildren) {
+        return JOhm.<T>save(model,saveChildren,DEFAULT_TTL);
+
+    }
+
+
 	@SuppressWarnings("unchecked")
-	public static <T> T save(final Object model, boolean saveChildren) {
+	public static <T> T save(final Object model, boolean saveChildren, final int ttl) {
 		if (!isNew(model)) {
 			delete(model.getClass(), JOhmUtils.getId(model));
 		}
@@ -310,7 +318,8 @@ public final class JOhm {
 					}
 				}
 				// always add to the all set, to support getAll
-				nest.cat("all").sadd(String.valueOf(JOhmUtils.getId(model)));
+				//nest.cat("all").sadd(String.valueOf(JOhmUtils.getId(model)));
+                nest.cat("all").sadd(String.valueOf(JOhmUtils.getId(model)),ttl);
 			}
 		} catch (IllegalArgumentException e) {
 			throw new JOhmException(e);
@@ -322,6 +331,7 @@ public final class JOhm {
 			public void execute() {
 				del(nest.cat(JOhmUtils.getId(model)).key());
 				hmset(nest.cat(JOhmUtils.getId(model)).key(), hashedObject);
+                expire(nest.cat(JOhmUtils.getId(model)).key(),ttl);
 			}
 		});
 
