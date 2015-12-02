@@ -20,7 +20,7 @@ public final class JOhm {
 	/** Current db index, on new redis connection it is set by default to 0 */
 	public static long dbIndex = 0L;
 
-    private static final int DEFAULT_TTL=1000*60;
+    private static final int DEFAULT_TTL=60*60*2;//default set to 2 hours
 
 	/**
 	 * Read the id from the given model. This operation will typically be useful
