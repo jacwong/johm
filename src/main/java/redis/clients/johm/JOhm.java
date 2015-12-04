@@ -318,8 +318,8 @@ public final class JOhm {
 					}
 				}
 				// always add to the all set, to support getAll
-				//nest.cat("all").sadd(String.valueOf(JOhmUtils.getId(model)));
-                nest.cat("all").sadd(String.valueOf(JOhmUtils.getId(model)),ttl);
+				nest.cat("all").sadd(String.valueOf(JOhmUtils.getId(model)));
+                //nest.cat("all").sadd(String.valueOf(JOhmUtils.getId(model)),ttl);
 			}
 		} catch (IllegalArgumentException e) {
 			throw new JOhmException(e);
@@ -331,7 +331,7 @@ public final class JOhm {
 			public void execute() {
 				del(nest.cat(JOhmUtils.getId(model)).key());
 				hmset(nest.cat(JOhmUtils.getId(model)).key(), hashedObject);
-                expire(nest.cat(JOhmUtils.getId(model)).key(),ttl);
+                //expire(nest.cat(JOhmUtils.getId(model)).key(),ttl);
 			}
 		});
 
