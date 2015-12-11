@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>redis</groupId>
 	<artifactId>johm</artifactId>
-	<version>0.6.5-SNAPSHOT</version>
+	<version>0.6.5-CCO</version>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -27,13 +27,30 @@
         </dependency>
     </dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>internal.repo</id>
-			<name>Temporary Staging Repository</name>
-			<url>file://${project.build.directory}/mvn-repo</url>
-		</repository>
-	</distributionManagement>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>repo.ebuilder.io</id>
+            <url>s3://repo.ebuilder.io/snapshot</url>
+        </snapshotRepository>
+        <repository>
+            <id>repo.ebuilder.io</id>
+            <url>s3://repo.ebuilder.io/release</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>repo.ebuilder.io</id>
+            <url>s3://repo.ebuilder.io/release</url>
+        </repository>
+        <repository>
+            <id>johm-mvn-repo</id>
+            <url>https://raw.github.com/agrison/johm/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
 	<properties>
 		<github.global.server>github</github.global.server>
@@ -59,7 +76,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+			<!--plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
 				<version>0.10</version>
@@ -81,7 +98,7 @@
 						<phase>deploy</phase>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin-->
 		</plugins>
 	</build>
 </project>
